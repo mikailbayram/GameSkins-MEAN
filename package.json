@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/mikailbayram/GameSkins-MEAN#readme",
   "dependencies": {
+    "dotenv": "^6.1.0",
     "express": "^4.16.4"
   }
 }
