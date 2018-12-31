@@ -1,11 +1,24 @@
 const express = require('express');
 const app = express();
-const path = require('path');
-const http = require("http");
+const initDb = require("./db").initDb;
+const bodyParser = require('body-parser')
 
 require('dotenv').config();
 
-app.use('/', express.static('app'));
-app.use(express.json());       // to support JSON-encoded bodies
+//router imports
+const user = require('./routes/user');
 
-app.listen(process.env.PORT, () => console.log('Example app listening on port '+process.env.PORT));
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+app.use(bodyParser.json())
+
+
+app.use('/user', user);
+
+app.use('/', express.static('app'));
+
+//initialize db
+initDb();
+
+app.listen(process.env.PORT, () => console.log('Example app listening on port ' + process.env.PORT));
