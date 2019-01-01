@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const getDb = require('../db').getDb;
-const jwt = require("jsonwebtoken");
 
+const jwt = require("jsonwebtoken");
 const jwt_secret = "secret_moj";
 
 router.post('/register', function (req, res) {

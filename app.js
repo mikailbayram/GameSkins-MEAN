@@ -1,20 +1,52 @@
 const express = require('express');
 const app = express();
 const initDb = require("./db").initDb;
+const getDb = require("./db").getDb;
 const bodyParser = require('body-parser')
+
+const jwt = require("jsonwebtoken");
+const jwt_secret = "secret_moj";
+const MongoId = require("mongodb").ObjectID;
 
 require('dotenv').config();
 
 //router imports
 const user = require('./routes/user');
+const items = require('./routes/items');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+app.use("/rest/", function (request, response, next) {
+    const db = getDb();
+    jwt.verify(request.get("JWT"), jwt_secret, function (error, decoded) {
+        if (error) {
+            response.status(401).send("Unauthorized access");
+        } else {
+            db.collection("users").findOne(
+                { _id: new MongoId(decoded._id) },
+                function (error, user) {
+                    if (error) {
+                        throw error;
+                    } else {
+                        if (user) {
+                            //pass user id through middleware
+                            request.user_id = user._id;
+                            next();
+                        } else {
+                            response.status(401).send("Credentials are wrong.");
+                        }
+                    }
+                }
+            );
+        }
+    });
+})
 
 app.use('/user', user);
+app.use('/rest/items/', items);
 
 app.use('/', express.static('app'));
 

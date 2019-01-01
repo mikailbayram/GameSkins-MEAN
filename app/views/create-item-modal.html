@@ -1,3 +1,29 @@
 <md-dialog aria-label="New Item">
-    ASD
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <form>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Image Url</label>
+                    <input ng-model="newItem.imageUrl" />
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Name</label>
+                    <input required ng-model="newItem.name" />
+
+                    <div ng-messages="login-form.email.$error" role="alert">
+                        <div ng-message-exp="['required']">
+                            Name is required.
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Description</label>
+                    <textarea name="description" rows="4" ng-model="newItem.description">Enter text here...</textarea>
+                </md-input-container>
+                <md-input-container style="width:100%; display: flex; justify-content: center" flex-gt-sm>
+                    <md-button style="width:100%" class="md-raised md-primary" type="submit" ng-click="create_item(newItem)">Add</md-button>
+                </md-input-container>
+            </form>
+        </div>
+    </md-dialog-content>
 </md-dialog>
