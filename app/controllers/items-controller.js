@@ -1,4 +1,4 @@
-function ItemsController($scope, $http, $mdDialog) {
+function ItemsController($scope, $rootScope, $http, $mdDialog) {
     var config = {
         headers: {
             // 'Authorization': 'Basic d2VudHdvcnRobWFuOkNoYW5nZV9tZQ==',
@@ -7,9 +7,12 @@ function ItemsController($scope, $http, $mdDialog) {
         }
     };
 
+    $rootScope.items = [];
+
     const get_items = function () {
         $http.get('rest/items', config).then(function (response) {
-            $scope.items = response.data;
+            $rootScope.items = [...response.data];
+            console.log($scope.items);
         }), function (response) {
             alert(response.status);
         }
@@ -19,7 +22,7 @@ function ItemsController($scope, $http, $mdDialog) {
         $http.post('/rest/items/create', $scope.newItem, config).then(function (response) {
             $scope.newItem = null;
             $mdDialog.hide();
-            get_items();
+            get_items().bind(this);
         }, function (error) {
             console.log(error);
         });

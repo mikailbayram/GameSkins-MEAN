@@ -1,21 +1,35 @@
 <div ng-cloak>
-    <md-content class="md-padding" layout-xs="column" layout="row" style="width: 100%">
-        <div flex-xs flex-gt-xs="30" layout="column">
-            <md-card>
-                <md-card-title>
-                    <md-card-title-text>
-                        <span class="md-headline">Add a New Skin</span>
-                    </md-card-title-text>
-                    <md-card-title-media>
-                        <div class="md-media-lg card-media">
-                            <img src="https://cdn3.iconfinder.com/data/icons/simple-toolbar/512/add_plus_new_user_green_page_file_up_text-512.png">
-                        </div>
-                    </md-card-title-media>
-                </md-card-title>
-                <md-card-actions layout="row" layout-align="end center">
-                    <md-button class="md-raised md-primary" ng-click="showDialog($event)">Add New</md-button>
-                </md-card-actions>
-            </md-card>
-        </div>
+    <md-content class="md-padding items" layout-xs="column" layout="row" style="width: 100%">
+        <md-card class="col-md-3 col-xs-12">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Add a New Skin</span>
+                </md-card-title-text>
+                <md-card-title-media>
+                    <div class="md-media-lg card-media">
+                        <img src="https://cdn3.iconfinder.com/data/icons/simple-toolbar/512/add_plus_new_user_green_page_file_up_text-512.png">
+                    </div>
+                </md-card-title-media>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button class="md-raised md-primary" ng-click="showDialog($event)">Add New</md-button>
+            </md-card-actions>
+        </md-card>
+        <md-card ng-repeat="(i, item) in items track by i" class="col-md-3 col-xs-12">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">{{item.name}}</span>
+                    <span class="md-subhead">{{item.description}}</span>
+                </md-card-title-text>
+                <md-card-title-media>
+                    <div class="md-media-lg card-media">
+                        <img ng-src="{{item.imageUrl}}">
+                    </div>
+                </md-card-title-media>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="end center">
+                <!-- <md-button class="md-raised md-primary" ng-click="showDialog($event)">Add New</md-button> -->
+            </md-card-actions>
+        </md-card>
     </md-content>
 </div>
