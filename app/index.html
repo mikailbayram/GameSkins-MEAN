@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" ng-app="app" ng-controller="AppCtrl" ng-cloak>
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,52 +9,127 @@
 
 </head>
 
-<body ng-app="App" ng-controller="AppCtrl" ng-cloak>
-    <!--
-    Your HTML content here
-  -->
-    <section layout="row" flex>
-
-        <md-sidenav class="md-sidenav-left" style="height:100vh" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')"
-            md-whiteframe="4">
-
-            <md-toolbar class="md-theme-cyan">
-                <h1 class="md-toolbar-tools">Sidenav Left</h1>
-            </md-toolbar>
-
-            <md-content layout-padding ng-controller="LeftCtrl">
-                <md-button ng-click="close()" class="md-primary" hide-gt-md>
-                    Close Sidenav Left
-                </md-button>
-                <p hide show-gt-md>
-                    This sidenav is locked open on your device. To go back to the default behavior,
-                    narrow your display.
-                </p>
-            </md-content>
-
-        </md-sidenav>
-        <md-toolbar class="sidenav-toggle">
-            <md-button ng-click="toggleLeft()" class="md-raised">
-                <i class="material-icons">chevron_right</i>
-            </md-button>
-        </md-toolbar>
-        <md-content>
-            <div layout="column" layout-align="top center">
-            </div>
-        </md-content>
-
-        <!-- Angular Material requires Angular.js Libraries -->
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
-
-        <!-- Angular Material Library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
-
-
-        <script src="./controllers/app-controller.js"></script>
+<body>
+    <div ng-if="!check_login()">
+        <div ng-include="'views/login.html'"></div>
+    </div>
+    <div ng-if="check_login()">
+        <div ng-include="'views/home.html'"></div>
+    </div>
 </body>
+
+
+<!-- Angular Material requires Angular.js Libraries -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+<script src="https://unpkg.com/@uirouter/angularjs@1.0.19/release/angular-ui-router.min.js"></script>
+
+<!-- Angular Material Library -->
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+
+
+<script src="./controllers/auth-controller.js"></script>
+
+<script>
+    const app = angular.module('app', ['ngMaterial', 'ngMessages', 'ngRoute']);
+
+    app.controller('authController', AuthController);
+
+    app.config(function ($routeProvider) {
+        $routeProvider
+            .when("/", {
+                templateUrl: "views/home.html",
+            })
+            .when("/login", {
+                templateUrl: "views/login.html",
+                controller: "authController"
+            })
+    }).config(function ($mdThemingProvider) {
+        $mdThemingProvider.theme('default')
+            .primaryPalette('blue-grey')
+            .accentPalette('teal');
+    });
+
+    app.controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+        $scope.toggleLeft = buildDelayedToggler('left');
+        $scope.toggleRight = buildToggler('right');
+        $scope.isOpenRight = function () {
+            return $mdSidenav('right').isOpen();
+        };
+
+        /**
+         * Supplies a function that will continue to operate until the
+         * time is up.
+         */
+        function debounce(func, wait, context) {
+            var timer;
+
+            return function debounced() {
+                var context = $scope,
+                    args = Array.prototype.slice.call(arguments);
+                $timeout.cancel(timer);
+                timer = $timeout(function () {
+                    timer = undefined;
+                    func.apply(context, args);
+                }, wait || 10);
+            };
+        }
+
+        /**
+         * Build handler to open/close a SideNav; when animation finishes
+         * report completion in console
+         */
+        function buildDelayedToggler(navID) {
+            return debounce(function () {
+                // Component lookup should always be available since we are not using `ng-if`
+                $mdSidenav(navID)
+                    .toggle()
+                    .then(function () {
+                        $log.debug("toggle " + navID + " is done");
+                    });
+            }, 200);
+        }
+
+        function buildToggler(navID) {
+            return function () {
+                // Component lookup should always be available since we are not using `ng-if`
+                $mdSidenav(navID)
+                    .toggle()
+                    .then(function () {
+                        $log.debug("toggle " + navID + " is done");
+                    });
+            };
+        }
+
+        $scope.check_login = function () {
+            if (localStorage.getItem('token')) {
+                return true;
+            }
+            return false;
+        }
+    })
+        .controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+            $scope.close = function () {
+                // Component lookup should always be available since we are not using `ng-if`
+                $mdSidenav('left').close()
+                    .then(function () {
+                        $log.debug("close LEFT is done");
+                    });
+
+            };
+        })
+        .controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+            $scope.close = function () {
+                // Component lookup should always be available since we are not using `ng-if`
+                $mdSidenav('right').close()
+                    .then(function () {
+                        $log.debug("close RIGHT is done");
+                    });
+            };
+        });
+</script>
 
 </html>
