@@ -1,8 +1,8 @@
-<div layout="row" class="login">
+<div layout="row" class="login" ng-controller="authController">
     <md-whiteframe class="md-whiteframe-1dp" flex-sm="45" flex-gt-sm="35" flex-gt-md="45" layout layout-align="center center">
         <md-content layout-padding style="width:80%">
             <div>
-                <form name="login-form">
+                <form>
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>E-mail</label>
                         <input required type="email" ng-model="user.email" ng-pattern="/^.+@.+\..+$/" />
@@ -16,7 +16,7 @@
 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Password</label>
-                        <input type="password" ng-model="user.password" minlength="6" required/>
+                        <input type="password" ng-model="user.password" minlength="6" required />
 
                         <div ng-messages="login-form.password.$error" role="alert">
                             <div ng-message-exp="['required', 'minLength']">
@@ -25,7 +25,7 @@
                         </div>
                     </md-input-container>
                     <md-input-container style="width:100%; display: flex; justify-content: center" flex-gt-sm>
-                        <md-button style="width:100%" class="md-raised md-primary" type="submit">LOGIN</md-button>
+                        <md-button style="width:100%" class="md-raised md-primary" type="submit" ng-click="userLogin(user)">LOGIN</md-button>
                     </md-input-container>
                 </form>
             </div>
