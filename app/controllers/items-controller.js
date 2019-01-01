@@ -12,7 +12,6 @@ function ItemsController($scope, $rootScope, $http, $mdDialog) {
     const get_items = function () {
         $http.get('rest/items', config).then(function (response) {
             $rootScope.items = [...response.data];
-            console.log($scope.items);
         }), function (response) {
             alert(response.status);
         }
@@ -22,7 +21,15 @@ function ItemsController($scope, $rootScope, $http, $mdDialog) {
         $http.post('/rest/items/create', $scope.newItem, config).then(function (response) {
             $scope.newItem = null;
             $mdDialog.hide();
-            get_items().bind(this);
+            get_items();
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    $scope.delete_item = function (id) {
+        $http.delete('/rest/items/delete/' + id, config).then(function (response) {
+            get_items();
         }, function (error) {
             console.log(error);
         });

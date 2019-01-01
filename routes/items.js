@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const getDb = require('../db').getDb;
+const MongoId = require("mongodb").ObjectID;
 
 //get all items of that user
 router.get('/', function (req, res) {
@@ -29,5 +30,17 @@ router.post('/create', function (req, res) {
         }
     );
 })
+
+
+router.delete("/delete/:id", function (req, res) {
+    const db = getDb();
+    db.collection("items").findOneAndDelete(
+        { _id: new MongoId(req.params.id) },
+        (err, result) => {
+            if (err) return res.send(500, err);
+            res.send("OK");
+        }
+    );
+});
 
 module.exports = router;
