@@ -14,6 +14,7 @@ require('dotenv').config();
 const user = require('./routes/user');
 const items = require('./routes/items');
 const bids = require('./routes/bids');
+const comments = require('./routes/comments');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -50,6 +51,7 @@ app.use("/rest/", function (request, response, next) {
 app.use('/user', user);
 app.use('/rest/items/', items);
 app.use('/rest/bids/', bids);
+app.use('/rest/comments/', comments);
 
 app.use('/', express.static('app'));
 

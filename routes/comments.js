@@ -6,6 +6,11 @@ const MongoId = require("mongodb").ObjectID;
 //get all comments of that item
 router.get('/:item_id', function (req, res) {
     const db = getDb();
+    db.collection("items")
+        .find({ _id: new MongoId(req.params.item_id) })
+        .toArray((err, items) => {
+            if (err) throw err;
+        });
     db.collection("comments")
         .find({ item_id: req.params.item_id })
         .toArray((err, comments) => {
@@ -17,7 +22,7 @@ router.get('/:item_id', function (req, res) {
 
 router.post('/create', function (req, res) {
     const db = getDb();
-    
+
     db.collection("comments").save(
         {
             comment: req.body.comment,
@@ -26,13 +31,13 @@ router.post('/create', function (req, res) {
         },
         (err, result) => {
             if (err) return console.log(err);
-            res.send("OK");
+            res.send(result);
         }
     );
 })
 
-router.put("/comment/:id", function (request, response) {
-    item = request.body;
+router.put("/edit/:id", function (req, res) {
+    const db = getDb();
     db.collection("comments").findOneAndUpdate(
         { _id: new MongoId(req.params.id) },
         {
@@ -42,7 +47,7 @@ router.put("/comment/:id", function (request, response) {
         },
         (err, result) => {
             if (err) return res.send(err);
-            response.send("OK");
+            res.send("OK");
         }
     );
 })

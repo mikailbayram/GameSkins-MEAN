@@ -4,53 +4,37 @@ const app = require('../index');
 const token = require('./config').token;
 
 //Registration tests
-describe("Items", function () {
+describe("Comments", function () {
 
-    it('should return an error if not jwt token is available', function (done) {
+    it('should return an error if item is not find', function (done) {
         request(app)
-            .post('/rest/items/create')
-            .expect(401, "Unauthorized access")
+            .get('/rest/comments/1')
+            .set('JWT', token)
+            .expect(500)
             .end(function (err, res) {
                 if (err) throw err;
             });
         done();
     })
 
-    it('should create a new item', function (done) {
+    it('should return comments of that item', function (done) {
         request(app)
-            .post('/rest/items/create')
+            .get('/rest/comments/5c30b8a304707a59c38e6429')
             .set('JWT', token)
-            .send({
-                name: "test item",
-                user_id: "5c30b3ba34fe5e4f46d9380b"
-            })
-            .expect(200, "OK")
+            .expect(200)
             .end(function (err, res) {
                 if (err) throw err;
             });
         done();
     })
 
-    it("should throw an error if no name is sent", function (done) {
+    it('should create a new comment', function (done) {
         request(app)
-            .post('/rest/items/create')
+            .post('/rest/comments/create')
             .set('JWT', token)
             .send({
-                user_id: "5c30b3ba34fe5e4f46d9380b"
-            })
-            .expect(422, "Invalid Data")
-            .end(function (err, res) {
-                if (err) throw err;
-            });
-        done();
-    })
-
-    it("should edit a existing item", function (done) {
-        request(app)
-            .put('/rest/items/edit/5c30b7799d2c88572bbfda83')
-            .set('JWT', token)
-            .send({
-                name: "test edit"
+                item_id: "5c30b8a304707a59c38e6429",
+                comment: "a new comment for test"
             })
             .expect(200)
             .end(function (err, res) {
@@ -59,11 +43,25 @@ describe("Items", function () {
         done();
     })
 
-    it("should delete an existing item", function (done) {
+    it('should edit a comment', function (done) {
         request(app)
-            .delete('/rest/items/delete/5c30b7799d2c88572bbfda83')
+            .put('/rest/comments/edit/5c3106440d935b7ac5ab0ecd')
             .set('JWT', token)
-            .expect(200, "OK")
+            .send({
+                comment: "a new comment for test edited"
+            })
+            .expect(200)
+            .end(function (err, res) {
+                if (err) throw err;
+            });
+        done();
+    })
+
+    it('should delete a comment', function (done) {
+        request(app)
+            .delete('/rest/comments/delete/5c310c8cd5603b7fc68e4302')
+            .set('JWT', token)
+            .expect(200)
             .end(function (err, res) {
                 if (err) throw err;
             });
