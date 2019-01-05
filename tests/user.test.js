@@ -1,5 +1,3 @@
-const chai = require("chai");
-const expect = chai.expect;
 const request = require('supertest');
 const app = require('../index');
 
@@ -54,7 +52,7 @@ describe("Login", function () {
         request(app)
             .post('/user/login')
             .send({ email: "mikailb@mail.com", password: "123456" })
-            .expect({ success: true })
+            .expect({ "success": true })
             .end(function (err, res) {
                 if (err) throw err;
             });

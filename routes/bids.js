@@ -6,6 +6,13 @@ const MongoId = require("mongodb").ObjectID;
 //get all bids of that item
 router.get('/:item_id', function (req, res) {
     const db = getDb();
+
+    db.collection("items").findOne({ _id: new MongoId(req.params.item_id) }, function (err, result) {
+        if (err) throw err;
+        console.log(result._id);
+        db.close();
+    });
+
     db.collection("bids")
         .find({ item_id: req.params.item_id })
         .toArray((err, bids) => {

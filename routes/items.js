@@ -17,6 +17,10 @@ router.get('/', function (req, res) {
 
 router.post('/create', function (req, res) {
     const db = getDb();
+    if (!req.body.name) {
+        res.status(422).send("Invalid Data");
+        return;
+    }
     db.collection("items").save(
         {
             name: req.body.name,
@@ -31,8 +35,8 @@ router.post('/create', function (req, res) {
     );
 })
 
-router.put("/edit/:id", function (request, response) {
-    item = request.body;
+router.put("/edit/:id", function (req, res) {
+    const db = getDb();
     db.collection("items").findOneAndUpdate(
         { _id: new MongoId(req.params.id) },
         {
@@ -45,7 +49,7 @@ router.put("/edit/:id", function (request, response) {
         },
         (err, result) => {
             if (err) return res.send(err);
-            response.send("OK");
+            res.send("OK");
         }
     );
 })

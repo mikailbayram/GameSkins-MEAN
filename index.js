@@ -34,6 +34,7 @@ app.use("/rest/", function (request, response, next) {
                     } else {
                         if (user) {
                             //pass user id through middleware
+                            request.body.user_id = user._id;
                             request.user_id = user._id;
                             next();
                         } else {

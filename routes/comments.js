@@ -4,10 +4,10 @@ const getDb = require('../db').getDb;
 const MongoId = require("mongodb").ObjectID;
 
 //get all comments of that item
-router.get('/', function (req, res) {
+router.get('/:item_id', function (req, res) {
     const db = getDb();
     db.collection("comments")
-        .find({ item_id: req.item_id })
+        .find({ item_id: req.params.item_id })
         .toArray((err, comments) => {
             if (err) return console.log(err);
             res.setHeader("Content-Type", "application/json");
@@ -17,10 +17,11 @@ router.get('/', function (req, res) {
 
 router.post('/create', function (req, res) {
     const db = getDb();
+    
     db.collection("comments").save(
         {
             comment: req.body.comment,
-            user_id: req.body.user_id,
+            user_id: req.user_id,
             item_id: req.body.item_id,
         },
         (err, result) => {
