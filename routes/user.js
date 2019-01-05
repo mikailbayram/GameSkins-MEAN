@@ -7,6 +7,16 @@ const jwt_secret = "secret_moj";
 
 router.post('/register', function (req, res) {
     const db = getDb();
+
+    if (!req.body.email){
+        res.status(422).send("Invalid Data");
+        return;
+    }
+    if (!req.body.password){
+        res.status(422).send("Invalid Data");
+        return;
+    }
+
     db.collection("users").save(
         {
             name: req.body.name,
@@ -59,6 +69,17 @@ router.get('/all', function (req, res) {
             res.send(users);
         });
 })
+
+router.delete("/delete/all", function (req, res) {
+    const db = getDb();
+    db.collection("users").deleteMany(
+        {},
+        (err, result) => {
+            if (err) return res.send(500, err);
+            res.send("OK");
+        }
+    );
+});
 
 
 module.exports = router;
