@@ -13,6 +13,7 @@ require('dotenv').config();
 //router imports
 const user = require('./routes/user');
 const items = require('./routes/items');
+const bids = require('./routes/bids');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -47,6 +48,7 @@ app.use("/rest/", function (request, response, next) {
 
 app.use('/user', user);
 app.use('/rest/items/', items);
+app.use('/rest/bids/', bids);
 
 app.use('/', express.static('app'));
 

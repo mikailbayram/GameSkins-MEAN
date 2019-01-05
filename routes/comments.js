@@ -3,26 +3,25 @@ const router = express.Router();
 const getDb = require('../db').getDb;
 const MongoId = require("mongodb").ObjectID;
 
-//get all items of that user
+//get all comments of that item
 router.get('/', function (req, res) {
     const db = getDb();
-    db.collection("items")
-        .find({ user_id: req.user_id })
-        .toArray((err, items) => {
+    db.collection("comments")
+        .find({ item_id: req.item_id })
+        .toArray((err, comments) => {
             if (err) return console.log(err);
             res.setHeader("Content-Type", "application/json");
-            res.send(items);
+            res.send(comments);
         });
 })
 
 router.post('/create', function (req, res) {
     const db = getDb();
-    db.collection("items").save(
+    db.collection("comments").save(
         {
-            name: req.body.name,
-            description: req.body.description,
-            imageUrl: req.body.imageUrl,
-            user_id: req.user_id
+            comment: req.body.comment,
+            user_id: req.body.user_id,
+            item_id: req.body.item_id,
         },
         (err, result) => {
             if (err) return console.log(err);
@@ -31,16 +30,13 @@ router.post('/create', function (req, res) {
     );
 })
 
-router.put("/edit/:id", function (request, response) {
+router.put("/comment/:id", function (request, response) {
     item = request.body;
-    db.collection("items").findOneAndUpdate(
+    db.collection("comments").findOneAndUpdate(
         { _id: new MongoId(req.params.id) },
         {
             $set: {
-                name: req.body.name,
-                description: req.body.description,
-                imageUrl: req.body.imageUrl,
-                user_id: req.user_id
+                comment: req.body.comment,
             }
         },
         (err, result) => {
@@ -52,7 +48,7 @@ router.put("/edit/:id", function (request, response) {
 
 router.delete("/delete/:id", function (req, res) {
     const db = getDb();
-    db.collection("items").findOneAndDelete(
+    db.collection("comments").findOneAndDelete(
         { _id: new MongoId(req.params.id) },
         (err, result) => {
             if (err) return res.send(500, err);
