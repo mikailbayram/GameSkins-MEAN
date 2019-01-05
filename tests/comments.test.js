@@ -3,7 +3,7 @@ const app = require('../index');
 
 const token = require('./config').token;
 
-//Registration tests
+//Comments tests
 describe("Comments", function () {
 
     it('should return an error if item is not find', function (done) {

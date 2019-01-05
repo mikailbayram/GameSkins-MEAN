@@ -9,8 +9,6 @@ router.get('/:item_id', function (req, res) {
 
     db.collection("items").findOne({ _id: new MongoId(req.params.item_id) }, function (err, result) {
         if (err) throw err;
-        console.log(result._id);
-        db.close();
     });
 
     db.collection("bids")
@@ -27,12 +25,12 @@ router.post('/create', function (req, res) {
     db.collection("bids").save(
         {
             item_id: req.body.item_id,
-            user_id: req.body.user_id,
+            user_id: req.user_id,
             amount: req.body.amount,
         },
         (err, result) => {
             if (err) return console.log(err);
-            res.send("OK");
+            res.send(result);
         }
     );
 })

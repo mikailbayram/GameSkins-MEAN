@@ -3,7 +3,7 @@ const app = require('../index');
 
 const token = require('./config').token;
 
-//Registration tests
+//Items tests
 describe("Items", function () {
 
     it('should return an error if not jwt token is available', function (done) {
