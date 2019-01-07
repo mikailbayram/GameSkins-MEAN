@@ -9,7 +9,7 @@ describe("Register", function () {
             .send({ name: 'Mikail', surname: "Bayram", email: "mikailb@mail.com", password: "123456" })
             .expect(200, "OK")
             .end(function (err, res) {
-                if (err) throw err;
+//                if (err) console.log(err);
             });
         done();
     }),
@@ -19,7 +19,7 @@ describe("Register", function () {
                 .send({ name: 'Mikail', surname: "Bayram", password: "123456" })
                 .expect(422, "Invalid Data")
                 .end(function (err, res) {
-                    if (err) throw err;
+    //                if (err) console.log(err);
                 });
             done();
         }),
@@ -29,7 +29,7 @@ describe("Register", function () {
                 .send({ name: 'Mikail', surname: "Bayram", email: "mikailb@mail.com" })
                 .expect(422, "Invalid Data")
                 .end(function (err, res) {
-                    if (err) throw err;
+    //                if (err) console.log(err);
                 });
             done();
         })
@@ -44,7 +44,7 @@ describe("Login", function () {
             .send({ email: "mikailb@123.com", password: "123123123123" })
             .expect(401, "Credentials are wrong.")
             .end(function (err, res) {
-                if (err) throw err;
+//                if (err) console.log(err);
             });
         done();
     })
@@ -54,7 +54,7 @@ describe("Login", function () {
             .send({ email: "mikailb@mail.com", password: "123456" })
             .expect({ "success": true })
             .end(function (err, res) {
-                if (err) throw err;
+//                if (err) console.log(err);
             });
         done();
     })

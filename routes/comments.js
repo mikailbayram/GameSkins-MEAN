@@ -14,7 +14,7 @@ router.get('/:item_id', function (req, res) {
     db.collection("comments")
         .find({ item_id: req.params.item_id })
         .toArray((err, comments) => {
-            if (err) return console.log(err);
+            // if (err) return console.log(err);
             res.setHeader("Content-Type", "application/json");
             res.send(comments);
         });
@@ -30,7 +30,7 @@ router.post('/create', function (req, res) {
             item_id: req.body.item_id,
         },
         (err, result) => {
-            if (err) return console.log(err);
+            if (err) return;
             res.send(result);
         }
     );

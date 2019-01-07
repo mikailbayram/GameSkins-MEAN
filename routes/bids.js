@@ -15,13 +15,20 @@ router.get('/:item_id', function (req, res) {
         .find({ item_id: req.params.item_id })
         .toArray((err, bids) => {
             if (err) return console.log(err);
-            res.setHeader("Content-Type", "application/json");
+            // res.setHeader("Content-Type", "application/json");
             res.send(bids);
         });
 })
 
 router.post('/create', function (req, res) {
     const db = getDb();
+    db.collection("items")
+        .find({ _id: new MongoId(req.body.item_id) })
+        .toArray((err, items) => {
+            if (items.length === 0) {
+                return;
+            }
+        });
     db.collection("bids").save(
         {
             item_id: req.body.item_id,

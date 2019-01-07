@@ -37,6 +37,10 @@ router.post('/create', function (req, res) {
 
 router.put("/edit/:id", function (req, res) {
     const db = getDb();
+    if (!req.body.name) {
+        res.status(422).send("Invalid Data");
+        return;
+    }
     db.collection("items").findOneAndUpdate(
         { _id: new MongoId(req.params.id) },
         {
