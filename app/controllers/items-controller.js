@@ -1,4 +1,4 @@
-function ItemsController($scope, $rootScope, $http, $mdDialog) {
+function ItemsController($scope, $rootScope, $http, $mdDialog, $location) {
     var config = {
         headers: {
             // 'Authorization': 'Basic d2VudHdvcnRobWFuOkNoYW5nZV9tZQ==',
@@ -34,6 +34,10 @@ function ItemsController($scope, $rootScope, $http, $mdDialog) {
             console.log(error);
         });
     }
+
+    $scope.onSelect = function (item) {
+        $location.path('/item/' + item._id);
+    };
 
     get_items();
 

@@ -35,6 +35,17 @@ router.post('/create', function (req, res) {
     );
 })
 
+router.get("/:id", function (req, res) {
+    console.log("evome");
+    const db = getDb();
+    db.collection("items").find({ _id: new MongoId(req.params.id) })
+        .toArray(function (err, result) {
+            if (err)
+                throw err;
+            res.send(result);
+        })
+});
+
 router.put("/edit/:id", function (req, res) {
     const db = getDb();
     if (!req.body.name) {

@@ -1,0 +1,25 @@
+<div class="container">
+    <form style="padding-top:100px">
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Image Url</label>
+            <input ng-model="item.imageUrl" />
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Name</label>
+            <input required ng-model="item.name" />
+
+            <div ng-messages="login-form.email.$error" role="alert">
+                <div ng-message-exp="['required']">
+                    Name is required.
+                </div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Description</label>
+            <textarea name="description" rows="4" ng-model="item.description">Enter text here...</textarea>
+        </md-input-container>
+        <md-input-container style="width:100%; display: flex; justify-content: center" flex-gt-sm>
+            <md-button style="width:100%" class="md-raised md-primary" type="submit" ng-click="edit_item()">Edit</md-button>
+        </md-input-container>
+    </form>
+</div>

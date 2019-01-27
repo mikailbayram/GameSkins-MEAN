@@ -18,7 +18,7 @@
         <md-card ng-repeat="(i, item) in items track by i" class="col-md-3 col-xs-12">
             <md-card-title>
                 <md-card-title-text>
-                    <span class="md-headline">{{item.name}}</span>
+                    <span class="md-headline" ng-click="onSelect(item)">{{item.name}}</span>
                     <span class="md-subhead">{{item.description}}</span>
                 </md-card-title-text>
                 <md-card-title-media>
